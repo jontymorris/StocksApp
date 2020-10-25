@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'icons/finance.dart';
+import 'widgets/news_widget.dart';
 
 void main() {
   runApp(StockApp());
@@ -18,15 +19,8 @@ class StockApp extends StatelessWidget {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Stock App',
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
+            centerTitle: true,
+            title: Text('Stock Watch'),
           ),
           bottomNavigationBar: TabBar(
             labelColor: Colors.blueGrey,
@@ -42,7 +36,7 @@ class StockApp extends StatelessWidget {
           body: TabBarView(
             children: [
               _buildSimpleText('Stock listings'),
-              _buildSimpleText('Read the news'),
+              NewsFeedWidget(),
               _buildSimpleText('Upcoming dividends'),
               _buildSimpleText('Learn to invest'),
               _buildSimpleText('Settings page')
