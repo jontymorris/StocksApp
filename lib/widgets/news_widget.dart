@@ -1,4 +1,5 @@
 import 'package:StocksApp/widgets/load_widget.dart';
+import 'package:StocksApp/widgets/webview_widget.dart';
 import 'package:flutter/material.dart';
 import '../services/news_service.dart';
 import '../model/article.dart';
@@ -51,7 +52,7 @@ class _NewsFeedState extends State<NewsFeedWidget> {
 
   Widget buildArticle(Article article) {
     return InkWell(
-      onTap: () => {},
+      onTap: () => openArticle(article),
       child: Padding(
         padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
         child: Row(
@@ -83,5 +84,13 @@ class _NewsFeedState extends State<NewsFeedWidget> {
         ),
       ),
     );
+  }
+
+  void openArticle(Article article) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WebViewWidget(article.links, 'Latest news'),
+        ));
   }
 }
