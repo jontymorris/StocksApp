@@ -39,7 +39,7 @@ class _NewsFeedState extends State<NewsFeedWidget> {
               )
             ];
 
-            listItems.addAll(snapshot.data.map((e) => buildArticle(e)));
+            listItems.addAll(snapshot.data.map((e) => _buildArticle(e)));
 
             return ListView(
               children: listItems,
@@ -50,9 +50,9 @@ class _NewsFeedState extends State<NewsFeedWidget> {
         });
   }
 
-  Widget buildArticle(Article article) {
+  Widget _buildArticle(Article article) {
     return InkWell(
-      onTap: () => openArticle(article),
+      onTap: () => _openArticle(article),
       child: Padding(
         padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
         child: Row(
@@ -86,7 +86,7 @@ class _NewsFeedState extends State<NewsFeedWidget> {
     );
   }
 
-  void openArticle(Article article) {
+  void _openArticle(Article article) {
     Navigator.push(
         context,
         MaterialPageRoute(
