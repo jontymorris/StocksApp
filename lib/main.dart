@@ -18,10 +18,6 @@ class StockApp extends StatelessWidget {
       home: DefaultTabController(
         length: 5,
         child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text('Stock Watch'),
-          ),
           bottomNavigationBar: TabBar(
             labelColor: Colors.blueGrey,
             indicatorColor: Colors.blueGrey,
