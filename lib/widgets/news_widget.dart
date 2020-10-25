@@ -1,3 +1,4 @@
+import 'package:StocksApp/widgets/load_widget.dart';
 import 'package:flutter/material.dart';
 import '../services/news_service.dart';
 import '../model/article.dart';
@@ -23,24 +24,64 @@ class _NewsFeedState extends State<NewsFeedWidget> {
     return FutureBuilder<List<Article>>(
         future: futureFeed,
         builder: (context, snapshot) {
-          if (snapshot.hasData)
+          if (snapshot.hasData) {
+            List<Widget> listItems = [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'LATEST NEWS',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              )
+            ];
+
+            listItems.addAll(snapshot.data.map((e) => buildArticle(e)));
+
             return ListView(
-              children: snapshot.data
-                  .map(
-                    (e) => InkWell(
-                      onTap: () => {},
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(e.title),
+              children: listItems,
+            );
+          }
+
+          return LoadingWidget();
+        });
+  }
+
+  Widget buildArticle(Article article) {
+    return InkWell(
+      onTap: () => {},
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        article.title,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                  )
-                  .toList(),
-            );
-
-          return Center(
-              child: SizedBox(
-                  width: 30, height: 30, child: CircularProgressIndicator()));
-        });
+                    Text(article.summary),
+                  ],
+                ),
+              ),
+            ),
+            Image.network(
+              article.icon,
+              width: 50,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
