@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'icons/finance.dart';
 import 'widgets/news_widget.dart';
+import 'widgets/shares_widget.dart';
 
 void main() {
   runApp(StockApp());
@@ -31,7 +32,7 @@ class StockApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              _buildSimpleText('Stock listings'),
+              SharesWidget(),
               NewsFeedWidget(),
               _buildSimpleText('Upcoming dividends'),
               _buildSimpleText('Learn to invest'),
