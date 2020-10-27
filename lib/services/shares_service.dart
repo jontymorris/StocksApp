@@ -5,7 +5,7 @@ import '../env.dart';
 
 const _source = baseUrl + 'api/shares';
 
-Future<List<Share>> getNewsFeed() async {
+Future<List<Share>> getShares() async {
   var response = await http.get(_source);
   Iterable shares = jsonDecode(response.body);
 
