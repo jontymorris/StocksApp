@@ -12,18 +12,18 @@ class NewsFeedWidget extends StatefulWidget {
 }
 
 class _NewsFeedState extends State<NewsFeedWidget> {
-  Future<List<Article>> futureFeed;
+  Future<List<Article>> _futureFeed;
 
   @override
   void initState() {
     super.initState();
-    futureFeed = getNewsFeed();
+    _futureFeed = getNewsFeed();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Article>>(
-        future: futureFeed,
+        future: _futureFeed,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Widget> listItems = [

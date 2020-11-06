@@ -12,18 +12,18 @@ class SharesWidget extends StatefulWidget {
 }
 
 class _SharesState extends State<SharesWidget> {
-  Future<List<Share>> futureShares;
+  Future<List<Share>> _futureShares;
 
   @override
   void initState() {
     super.initState();
-    futureShares = getShares();
+    _futureShares = getShares();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Share>>(
-        future: futureShares,
+        future: _futureShares,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Widget> listItems = [
