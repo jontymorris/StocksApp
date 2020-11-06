@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWidget extends StatefulWidget {
-  final url;
-  final title;
+  final String url;
+  final String title;
 
   WebViewWidget(this.url, this.title);
 
@@ -13,8 +13,8 @@ class WebViewWidget extends StatefulWidget {
 }
 
 class _WebViewState extends State<WebViewWidget> {
-  final _url;
-  final _title;
+  final String _url;
+  final String _title;
 
   _WebViewState(this._url, this._title);
 
