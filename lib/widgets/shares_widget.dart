@@ -1,8 +1,8 @@
 import 'package:StocksApp/widgets/load_widget.dart';
-import 'package:StocksApp/widgets/webview_widget.dart';
 import 'package:flutter/material.dart';
 import '../services/shares_service.dart';
 import '../model/share.dart';
+import './daily_widget.dart';
 
 class SharesWidget extends StatefulWidget {
   SharesWidget({Key key}) : super(key: key);
@@ -82,7 +82,11 @@ class _SharesState extends State<SharesWidget> {
     );
   }
 
-  void _openShare(Share article) {
-    // todo: open the share view
+  void _openShare(Share share) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DailyWidget(share: share),
+        ));
   }
 }
