@@ -17,6 +17,8 @@ class DailyWidget extends StatefulWidget {
 
 class _DailyState extends State<DailyWidget> {
   final Share _share;
+
+  int _daysToGoBack;
   Future<List<Candle>> _futureDaily;
 
   _DailyState(this._share);
@@ -24,6 +26,7 @@ class _DailyState extends State<DailyWidget> {
   @override
   void initState() {
     super.initState();
+    _daysToGoBack = 90;
     _futureDaily = getDaily(this._share.symbol);
   }
 
@@ -43,7 +46,8 @@ class _DailyState extends State<DailyWidget> {
                 children: [
                   _buildHeader(latest),
                   _buildDescription(),
-                  _buildDaily(snapshot.data, 90),
+                  _buildRangeOptions(),
+                  _buildDaily(snapshot.data),
                 ],
               );
             }
@@ -69,7 +73,7 @@ class _DailyState extends State<DailyWidget> {
             child: Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Text(
-                "\$${latest.close}",
+                "\$${latest.close} NZD",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -91,8 +95,8 @@ class _DailyState extends State<DailyWidget> {
       padding: EdgeInsets.only(top: 20, left: 20, right: 20),
       child: ExpandableText(
         _share.description,
-        collapseText: 'hide',
-        expandText: 'read more',
+        collapseText: 'Show less',
+        expandText: 'Read more',
         maxLines: 4,
         style: TextStyle(
           fontSize: 16,
@@ -101,9 +105,42 @@ class _DailyState extends State<DailyWidget> {
     );
   }
 
-  Widget _buildDaily(List<Candle> candles, int daysToGoBack) {
+  Widget _buildRangeOptions() {
+    var options = [
+      {'text': '7d', 'value': 7},
+      {'text': '1m', 'value': 30},
+      {'text': '3m', 'value': 90},
+      {'text': '1y', 'value': 365},
+      {'text': '5y', 'value': 1825},
+    ];
+
+    return Row(
+      children: [
+        ButtonBar(
+          children: options
+              .map(
+                (e) => FlatButton(
+                  disabledColor: Color.fromARGB(255, 200, 200, 200),
+                  disabledTextColor: Colors.black,
+                  onPressed: this._daysToGoBack == e['value']
+                      ? null
+                      : () {
+                          setState(() {
+                            this._daysToGoBack = e['value'];
+                          });
+                        },
+                  child: Text(e['text']),
+                ),
+              )
+              .toList(),
+        )
+      ],
+    );
+  }
+
+  Widget _buildDaily(List<Candle> candles) {
     var earliestDate = DateTime.now().subtract(
-      new Duration(days: daysToGoBack),
+      new Duration(days: _daysToGoBack),
     );
 
     var data = candles
@@ -124,9 +161,9 @@ class _DailyState extends State<DailyWidget> {
           height: 350.0,
           child: OHLCVGraph(
             data: data,
-            enableGridLines: true,
             volumeProp: 0.2,
             gridLineAmount: 5,
+            enableGridLines: true,
             gridLineColor: Colors.grey[300],
             gridLineLabelColor: Colors.grey,
           ),
