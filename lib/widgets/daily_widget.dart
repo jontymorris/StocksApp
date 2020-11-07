@@ -110,6 +110,7 @@ class _DailyState extends State<DailyWidget> {
       {'text': '7d', 'value': 7},
       {'text': '1m', 'value': 30},
       {'text': '3m', 'value': 90},
+      {'text': '6m', 'value': 180},
       {'text': '1y', 'value': 365},
       {'text': '5y', 'value': 1825},
     ];
@@ -120,6 +121,7 @@ class _DailyState extends State<DailyWidget> {
           children: options
               .map(
                 (e) => FlatButton(
+                  minWidth: 1,
                   disabledColor: Color.fromARGB(255, 200, 200, 200),
                   disabledTextColor: Colors.black,
                   onPressed: this._daysToGoBack == e['value']
