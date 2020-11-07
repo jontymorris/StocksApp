@@ -1,5 +1,6 @@
 import 'package:StocksApp/widgets/load_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_candlesticks/flutter_candlesticks.dart';
 import '../services/shares_service.dart';
 import '../model/share.dart';
 import '../model/candle.dart';
@@ -35,11 +36,14 @@ class _DailyState extends State<DailyWidget> {
           future: _futureDaily,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Widget> listItems =
-                  snapshot.data.map((e) => _buildDaily(e)).toList();
+              var latest = snapshot.data.last;
 
               return ListView(
-                children: listItems,
+                children: [
+                  _buildHeader(latest),
+                  _buildDescription(),
+                  _buildDaily(snapshot.data, 90),
+                ],
               );
             }
 
@@ -48,11 +52,75 @@ class _DailyState extends State<DailyWidget> {
     );
   }
 
-  Widget _buildDaily(Candle candle) {
+  Widget _buildHeader(Candle latest) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.network(
+            _share.logo,
+            width: 60,
+            height: 60,
+            fit: BoxFit.contain,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                "\$${latest.close}",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDescription() {
+    return Padding(
+      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Text(
-        candle.close.toString(),
+        _share.description,
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+  }
+
+  Widget _buildDaily(List<Candle> candles, int daysToGoBack) {
+    var earliestDate = DateTime.now().subtract(
+      new Duration(days: daysToGoBack),
+    );
+
+    var data = candles
+        .where((e) => e.dateTime.isAfter(earliestDate))
+        .map((e) => {
+              'open': e.open,
+              'high': e.high,
+              'low': e.low,
+              'close': e.close,
+              'volumeto': e.volume
+            })
+        .toList();
+
+    return Padding(
+      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Center(
+        child: Container(
+          height: 350.0,
+          child: OHLCVGraph(
+            data: data,
+            enableGridLines: true,
+            volumeProp: 0.2,
+            gridLineAmount: 5,
+            gridLineColor: Colors.grey[300],
+            gridLineLabelColor: Colors.grey,
+          ),
+        ),
       ),
     );
   }
