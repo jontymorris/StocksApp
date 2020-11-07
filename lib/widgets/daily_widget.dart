@@ -1,6 +1,7 @@
 import 'package:StocksApp/widgets/load_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_candlesticks/flutter_candlesticks.dart';
+import 'package:expandable_text/expandable_text.dart';
 import '../services/shares_service.dart';
 import '../model/share.dart';
 import '../model/candle.dart';
@@ -66,16 +67,20 @@ class _DailyState extends State<DailyWidget> {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(left: 20, right: 20),
               child: Text(
                 "\$${latest.close}",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
+          Icon(
+            Icons.favorite_outline_rounded,
+            size: 30,
+          )
         ],
       ),
     );
@@ -84,9 +89,14 @@ class _DailyState extends State<DailyWidget> {
   Widget _buildDescription() {
     return Padding(
       padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: Text(
+      child: ExpandableText(
         _share.description,
-        style: TextStyle(fontSize: 15),
+        collapseText: 'hide',
+        expandText: 'read more',
+        maxLines: 4,
+        style: TextStyle(
+          fontSize: 16,
+        ),
       ),
     );
   }
